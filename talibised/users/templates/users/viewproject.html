@@ -1,0 +1,105 @@
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
+
+<div class="container">
+
+    <div class="col-12 col-sm-6 col-md-10">
+        {% if request.user.is_authenticated and request.user.userType == 'professor' %}
+        <div class="row">
+            {% for foo in object_list %}
+            <div class="col-sm-6 mt-5">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="{% url 'users-view-project-detail' foo.id%}"> {{foo.project_name}} </a></h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Max Marks : {{ foo.max_marks }}</li>
+                        <li class="list-group-item">Deadline : {{ foo.due_date }}</li>
+
+
+                    </ul>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        <!--        <h3><strong> {{ foo.project_name }} </strong></h3>-->
+        <!--        <hr/>-->
+        <!--        <p> <h4>Description</h4> {{ foo.project_desc }} </p>-->
+        <!--        <br/>-->
+        <!--        <p> <h4>Marks</h4> {{ foo.max_marks }} </p>-->
+
+        <!--        <p> <h4>Deadline</h4> {{ foo.due_date }}  </p>-->
+
+
+        {% elif request.user.is_authenticated and request.user.userType == 'student' %}
+
+
+        <br/>
+        <h4><a href="{% url 'users-view-submitted-project' %}">View Submitted Projects</a></h4>
+        <hr/>
+         <div class="row">
+        {% for foo in object_list%}
+        <div class="col-sm-6 mt-5">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h3 class="card-title"><a href="{% url 'users-view-project-detail' foo.id%}"> {{foo.project_name}} </a></h3>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Max Marks : {{ foo.max_marks }}</li>
+                    <li class="list-group-item">Deadline : {{ foo.due_date }}</li>
+                    <a href="{% url 'users-submit-project-student' foo.id %}"><li class="list-group-item">Submit Project</li></a>
+
+                </ul>
+            </div>
+        </div>
+        <!--        <h3><strong> {{ foo.project_name }} </strong></h3>-->
+        <!--        <hr/>-->
+        <!--        <p> <h4>Description</h4> {{ foo.project_desc }} </p>-->
+        <!--        <br/>-->
+        <!--        <p> <h4>Marks</h4> {{ foo.max_marks }} </p>-->
+
+        <!--        <p> <h4>Deadline</h4> {{ foo.due_date }}  </p>-->
+        <!--        <br/>-->
+<!--        <h4><a href="{% url 'users-submit-project-student' foo.id %}">Submit Project</a></h4>-->
+        <hr/>
+        {% endfor %}
+         </div>
+        <hr/>
+
+        {% elif request.user.is_authenticated and request.user.userType == 'ta' %}
+        <div class="row">
+        {% for foo in object_list %}
+        {% if foo.allotted_ta == request.user %}
+        <div class="col-sm-6 mt-5">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h3 class="card-title"><a href="{% url 'users-view-project-detail' foo.id%}"> {{foo.project_name}} </a></h3>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Max Marks : {{ foo.max_marks }}</li>
+                    <li class="list-group-item">Deadline : {{ foo.due_date }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <!--        <h3><strong> {{ foo.project_name }} </strong></h3>-->
+        <!--        <hr/>-->
+        <!--        <p> <h4>Description</h4> {{ foo.project_desc }} </p>-->
+        <!--        <br/>-->
+        <!--        <p> <h4>Maximum Marks</h4> {{ foo.max_marks }} </p>-->
+
+        <!--        <p> <h4>Deadline</h4> {{ foo.due_date }}  </p>-->
+
+        <!--        <h4><a href="{% url 'users-view-submission' foo.id %}">View Submissions</a></h4>-->
+        {% endif %}
+        {% endfor %}
+        </div>
+        {% endif %}
+        <br/>
+    </div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends "users/base.html" %}
+{% block title %} Classroom Page {% endblock title%}
+
+{% block content %}
+    <div class="alert alert-secondary" role="alert">
+  TA
+</div>
+
+<a class="btn btn-primary" href="{%url 'users-view-project' %}" role="button">View Projects</a>
+{% endblock content %}

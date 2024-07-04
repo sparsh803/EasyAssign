@@ -1,0 +1,64 @@
+{% extends "users/base.html" %}
+
+{% block title %} Submit Project Page {% endblock title%}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="col-12 col-sm-6 col-md-10">
+
+        <hr/>
+
+        <h3><strong> {{ project.project_name }} </strong></h3>
+        <hr/>
+        <p> <h4>Description</h4> {{ project.project_desc }} </p>
+        <br/>
+        <p> <h4>Marks</h4> {{ project.max_marks }} </p>
+
+        <p> <h4>Deadline</h4> {{ project.due_date }}  </p>
+        <p> <h4>Deadline</h4> {{ submission.submission_file }}  </p>
+        <br/>
+
+        <hr/>
+
+        <hr/>
+
+        <br/>
+    </div>
+
+</div>
+<br>
+
+<div class="card-body">
+    <form method="POST" >
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="small mb-1"></label>
+                    {{ form }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-4 mb-0">
+            <button type="submit" class="col-md-12 btn btn-dark">Submit</button>
+            <br><br>
+        </div>
+
+    </form>
+</div>
+{% endblock content %}

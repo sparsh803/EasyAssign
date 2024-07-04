@@ -1,0 +1,175 @@
+{% extends "users/base.html" %}
+
+{% block title %} Submit Project Page {% endblock title%}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="col-12 col-sm-6 col-md-10">
+
+
+        <h1 class="display-3">{{project.project_name}}</h1>
+
+<h1 class="display-3">{{project.project_name}}</h1>
+
+        <hr>
+
+        <p>{{project.project_desc}}</p>
+
+        {% if project.document%}
+        <h10 class="display-5">{{project.document}}</h10>
+        {% endif %}
+
+        <!--        <h3><strong> {{ project.project_name }} </strong></h3>-->
+        <!--        <hr/>-->
+        <!--        <p> <h4>Description</h4> {{ project.project_desc }} </p>-->
+        <!--        <br/>-->
+        <!--        <p> <h4>Maximum Marks</h4> {{ project.max_marks }} </p>-->
+
+<!--        <p> <h4>Deadline</h4> {{ project.due_date }}  </p>-->
+        {% if request.user.is_authenticated and request.user.userType == 'professor' or request.user.userType == 'ta' %}
+        <h10 class="display-5"> Submitted File : {{ submission.submission_file }} </h10>
+        {% endif %}
+
+        {% if request.user.is_authenticated and request.user.userType == 'student' and submission.is_submitted %}
+        <h10 class="display-5"> Submitted File : {{ submission.submission_file }} </h10>
+        {% endif %}
+        <br/>
+<!--        {% if submission.is_checked %}-->
+<!--        <p> <h4>Graded</h4> {{ submission.marks_alloted }}/{{project.max_marks}} </p>-->
+<!--        {% endif %}-->
+
+
+        <br/>
+    </div>
+    <hr/>
+
+</div>
+<br>
+{% if request.user.is_authenticated and request.user.userType == 'student' %}
+<div class="card-body">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        {% if not submission.is_submitted %}
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="small mb-1">Upload File</label>
+                    {{ form.submission_file }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-4 mb-0">
+            <button type="submit" name="submit_project" class="col-md-12 btn btn-dark">Submit</button>
+            <br><br>
+        </div>
+
+        {% endif %}
+
+    </form>
+</div>
+
+{% elif request.user.is_authenticated and request.user.userType == 'professor' %}
+<div class="card-body">
+    <form method="POST">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        {% if not submission.is_checked%}
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="small mb-1"></label>
+                    <h5 class="display-5">Grade : {{form.marks_alloted}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-4 mb-0">
+            <button type="submit" name = 'submit_project' class="btn btn-dark">Submit</button>
+            <br><br>
+        </div>
+        {%endif %}
+
+    </form>
+
+    {% elif request.user.is_authenticated and request.user.userType == 'ta' %}
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <div id="form_errors">
+                    {% for key, value in form.errors.items %}
+                    <strong>{{ value }}</strong>
+                    {% endfor %}
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times</span>
+                </button>
+            </div>
+            {% endif %}
+            {% if not submission.is_checked%}
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="small mb-1"></label>
+                        Grade Project{{ form.marks_alloted }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-4 mb-0">
+                <button type="submit" name='submit_project' class="col-md-12 btn btn-dark">Submit</button>
+                <br><br>
+            </div>
+            {% endif %}
+
+        </form>
+
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <h3>Add Comment</h3>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" name='comment_submit' class="btn btn-primary">Comment</button>
+    </form>
+
+    {% with comments.count as total_comments %}
+    <h3 class="mt-5">
+        {{ total_comments }} comment{{ total_comments|pluralize }}
+    </h3>
+    {% endwith %}
+    {% if not submission.comments.all %}
+    No comments yet
+    {% else %}
+    {% for comment in comments %}
+    {% include 'users/comment.html' with comment=comment %}
+    {% endfor %}
+    {% endif %}
+    {% endblock content %}

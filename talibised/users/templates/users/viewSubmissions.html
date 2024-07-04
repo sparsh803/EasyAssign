@@ -1,0 +1,90 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!--Font awesome icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+    <title>{% block title %} {% endblock %} </title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'users-home' %}">Talibised</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="{% url 'users-view-project-detail' project.id %}">Description<span
+                    class="sr-only">(current)</span></a>
+
+            <a class="nav-item nav-link active" href="{% url 'users-view-submission' project.id %}">Details<span
+                    class="sr-only">(current)</span></a>
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'users-view-project' %}">View</a>
+            <!--            {% if request.user.userType == 'professor' %}<a class="nav-item nav-link"-->
+            <!--                                                            href="{% url 'users-create-project' %}">Create</a>{% endif %}-->
+
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+
+<hr>
+
+<h5 class="display-5 mx-5">Total Students : {{user.count}}</h5>
+<br>
+<h5 class="display-5 mx-5">Submitted : {{submitted.count}}</h5>
+
+
+<table class="table table-striped mt-5">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Student</th>
+      <th scope="col">Grades</th>
+      <th scope="col">Submitted File </th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for obj in sub_list %}
+    <tr>
+      <th scope="row">{{obj.id}}</th>
+      <td>{{obj.student_id}}</td>
+      <td>
+          {% if obj.is_checked %}
+          {{obj.marks_alloted}}/{{project.max_marks}}
+          {% else %}
+            <a href="{% url 'users-submit-project-professor' obj.id %}">Grade</a>
+          {% endif %}
+
+      </td>
+      <td><a href="/uploads/{{obj.submission_file}}"> Link </a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<!--<div class="list-group">-->
+<!--    {% for obj in sub_list %}-->
+<!--    <a href="{% url 'users-submit-project-professor' obj.id %}" class="list-group-item list-group-item-action ">-->
+<!--        {{obj.student_id}}-->
+<!--    </a>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+

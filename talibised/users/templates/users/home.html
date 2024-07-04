@@ -1,0 +1,26 @@
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
+{% load static%}
+
+<!-- Background image -->
+
+
+
+<div style=width:100%;text-align:center;padding:2px;margin:0 auto">
+  <img src="{% static 'users/talibised.jpeg' %}">
+</div>
+<br>
+<br>
+<div style=width:100%;text-align:center;padding:2px;margin:0 auto">
+    <ul class="list-group list-group-flush">
+  <li class="list-group-item"><h1 class="display-4">Everyone can be a Talib <i class="fas fa-book-open"></i></h1></li>
+  <li class="list-group-item"><h3 class="display-5">Project Management System</h3></li>
+  <li class="list-group-item"><h5 class="display-7">Makes Project Submission Easier</h5></li>
+  <li class="list-group-item"><h13 class="display-13">Project Evaluation is simpler</h13></li>
+      <li class="list-group-item"><h7 class="display-9">Easy to Use and Handle</h7></li>
+</ul>
+</div>
+
+
+{% endblock content %}

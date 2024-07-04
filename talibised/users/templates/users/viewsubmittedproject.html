@@ -1,0 +1,45 @@
+{% extends "users/base.html" %}
+{% block title %} View Submissions {% endblock title%}
+{% block content %}
+
+
+<table class="table table-striped mt-5">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Project</th>
+      <th scope="col">Grades</th>
+      <th scope="col">Ask Doubt</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for obj in submission %}
+    <tr>
+      <th scope="row">{{obj.id}}</th>
+        <td>{{obj.project_id}}</td>
+      <td>
+          {% if obj.is_checked %}
+          {{obj.marks_alloted}}
+          {% else %}
+            -
+          {% endif %}
+
+      </td>
+      <td><a href="{% url 'users-submit-project-student' obj.project_id.id %}">
+        Ask
+    </a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+<!--<div class="list-group">-->
+<!--    {% for obj in submission %}-->
+<!--    <a href="{% url 'users-submit-project-student' obj.project_id.id %}" class="list-group-item list-group-item-action ">-->
+<!--        {{obj.project_id}}-->
+<!--    </a>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+{% endblock content %}
