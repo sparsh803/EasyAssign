@@ -73,6 +73,8 @@ This application provides the user with the option to sign up and login as a stu
 <a id="built-with"></a>
 
     Python
+    HTML
+  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
